@@ -12,9 +12,10 @@ type GitHubConfig struct {
 }
 
 type Config struct {
-	GitHub    GitHubConfig
-	DebugMode bool
-	DryRun    bool
+	GitHub     GitHubConfig
+	DebugMode  bool
+	DryRun     bool
+	KubeConfig string
 	//UserRoles []string
 	//MaxUsers  int
 }
@@ -26,8 +27,9 @@ func New() *Config {
 			Username: getEnv("GITHUB_USERNAME", ""),
 			APIKey:   getEnv("GITHUB_API_KEY", ""),
 		},
-		DebugMode: getEnvAsBool("DEBUG_MODE", true),
-		DryRun:    getEnvAsBool("DRY_RUN", true),
+		DebugMode:  getEnvAsBool("DEBUG_MODE", true),
+		DryRun:     getEnvAsBool("DRY_RUN", true),
+		KubeConfig: getEnv("KUBECONFIG", ""),
 		//UserRoles: getEnvAsSlice("USER_ROLES", []string{"admin"}, ","),
 		//MaxUsers:  getEnvAsInt("MAX_USERS", 1),
 	}
