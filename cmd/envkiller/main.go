@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"regexp"
 
 	"github.com/joho/godotenv"
 	"github.com/sgavrylenko/envkiller/pkg/config"
@@ -49,9 +50,17 @@ func main() {
 		panic(err.Error())
 	}
 	fmt.Printf("There are %d namespaces in the cluster\n", len(nsList.Items))
-	//fmt.Printf(pods.String())
+
+	regexPattern, err := regexp.Compile(conf.ResourceNamePrefix)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for _, ns := range nsList.Items {
-		fmt.Printf("NS %s created %s\n", ns.GetName(), ns.CreationTimestamp)
+		matched := regexPattern.MatchString(ns.Name)
+		if matched == true {
+			log.Printf("NS %s created %s\n", ns.GetName(), ns.CreationTimestamp)
+		}
 	}
 
 }
